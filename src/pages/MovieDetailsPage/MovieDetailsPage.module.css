@@ -1,0 +1,61 @@
+.container {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 20px;
+}
+
+.goBack {
+  display: inline-block;
+  margin-bottom: 15px;
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.movieInfo {
+  display: flex;
+  gap: 20px;
+  border-bottom: 1px solid #ccc;
+  padding-bottom: 20px;
+}
+
+.poster {
+  width: 300px;
+  border-radius: 8px;
+  object-fit: cover;
+}
+
+.details {
+  max-width: 600px;
+}
+
+.title {
+  font-size: 28px;
+  margin-bottom: 10px;
+}
+
+.overview {
+  margin-bottom: 15px;
+}
+
+.additional {
+  margin-top: 20px;
+}
+
+.links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 15px;
+}
+
+.links a {
+  color: #0066cc;
+  text-decoration: none;
+}
+
+.links a:hover {
+  text-decoration: underline;
+}
+
+
+

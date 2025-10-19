@@ -1,0 +1,19 @@
+.list {
+  list-style: none;
+  padding: 0;
+}
+
+.item {
+  border-bottom: 1px solid #ddd;
+  padding: 15px 0;
+}
+
+.author {
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.content {
+  font-size: 15px;
+  line-height: 1.5;
+}
