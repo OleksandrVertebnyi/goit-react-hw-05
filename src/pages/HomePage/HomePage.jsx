@@ -1,11 +1,11 @@
 import { useEffect, useState } from "react";
+import { Link, useLocation } from "react-router-dom";
 import { fetchTrendingMovies } from "../../api/tmdb-api";
 import styles from "./HomePage.module.css";
-import MovieList from "../../components/MovieList/MovieList";
 
 const HomePage = () => {
   const [movies, setMovies] = useState([]);
-  
+  const location = useLocation();
 
   useEffect(() => {
     const getMovies = async () => {
@@ -22,11 +22,20 @@ const HomePage = () => {
   return (
     <div className={styles.container}>
       <h1 className={styles.title}>Trending today</h1>
-      {movies.length > 0 && <MovieList movies={movies} />}
+      <ul className={styles.list}>
+        {movies.map((movie) => (
+          <li key={movie.id} className={styles.item}>
+            <Link
+              to={`/movies/${movie.id}`}
+              state={{ from: location }}
+              className={styles.link}>
+              {movie.title}
+            </Link>
+          </li>
+        ))}
+      </ul>
     </div>
   );
 };
 
 export default HomePage;
-
-
