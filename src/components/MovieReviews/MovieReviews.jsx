@@ -12,21 +12,19 @@ const MovieReviews = () => {
     const getReviews = async () => {
       try {
         const data = await fetchMovieReviews(movieId);
-        setReviews(data); 
+        setReviews(data || []);
       } catch (err) {
-        setError("Failed to fetch reviews");
+        setError("Error loading reviews");
         console.error(err);
       }
     };
     getReviews();
   }, [movieId]);
 
-  if (error) {
-    return <p className={styles.error}>{error}</p>;
-  }
+  if (error) return <p>{error}</p>;
 
-  if (reviews.length === 0) {
-    return <p className={styles.empty}>No reviews for this movie.</p>;
+  if (!Array.isArray(reviews) || reviews.length === 0) {
+    return <p>No reviews available for this movie.</p>;
   }
 
   return (
@@ -34,11 +32,6 @@ const MovieReviews = () => {
       {reviews.map((review) => (
         <li key={review.id} className={styles.item}>
           <h3 className={styles.author}>Author: {review.author}</h3>
-          {review.author_details?.rating && (
-            <p className={styles.rating}>
-              Rating: {review.author_details.rating}/10
-            </p>
-          )}
           <p className={styles.content}>{review.content}</p>
         </li>
       ))}

@@ -11,7 +11,7 @@ const MovieCast = () => {
     const getCast = async () => {
       try {
         const data = await fetchMovieCast(movieId);
-        setCast(data.cast);
+        setCast(data || []); 
       } catch (error) {
         console.error("Error fetching cast:", error);
       }
@@ -19,7 +19,7 @@ const MovieCast = () => {
     getCast();
   }, [movieId]);
 
-  if (cast.length === 0) {
+  if (!Array.isArray(cast) || cast.length === 0) {
     return <p>No cast information available for this movie.</p>;
   }
 

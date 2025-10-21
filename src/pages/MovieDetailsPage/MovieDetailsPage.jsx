@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
-import { useParams, Link, Routes, Route, useLocation } from "react-router-dom";
+import { useParams, Link, Outlet, useLocation } from "react-router-dom";
+
+
 import { fetchMovieDetails } from "../../api/tmdb-api";
 import MovieCast from "../../components/MovieCast/MovieCast";
 import MovieReviews from "../../components/MovieReviews/MovieReviews";
 import styles from "./MovieDetailsPage.module.css";
+
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
