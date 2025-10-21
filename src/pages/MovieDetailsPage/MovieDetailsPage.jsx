@@ -67,10 +67,7 @@ const MovieDetailsPage = () => {
           </li>
         </ul>
 
-        <Routes>
-          <Route path="cast" element={<MovieCast />} />
-          <Route path="reviews" element={<MovieReviews />} />
-        </Routes>
+        <Outlet />
       </div>
     </div>
   );
