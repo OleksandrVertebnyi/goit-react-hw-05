@@ -1,34 +1,38 @@
-import { useState, useEffect } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useParams, Link, Outlet, useLocation } from "react-router-dom";
-
-
 import { fetchMovieDetails } from "../../api/tmdb-api";
-import MovieCast from "../../components/MovieCast/MovieCast";
-import MovieReviews from "../../components/MovieReviews/MovieReviews";
 import styles from "./MovieDetailsPage.module.css";
-
 
 const MovieDetailsPage = () => {
   const { movieId } = useParams();
   const location = useLocation();
+
+  // ✅ «Заморожуємо» посилання назад один раз при першому рендері
+  const backLinkRef = useRef(location.state?.from ?? "/");
+
   const [movie, setMovie] = useState(null);
 
   useEffect(() => {
     const getMovieDetails = async () => {
-      const data = await fetchMovieDetails(movieId);
-      setMovie(data);
+      try {
+        const data = await fetchMovieDetails(movieId);
+        setMovie(data);
+      } catch (e) {
+        console.error("Error fetching movie details:", e);
+      }
     };
     getMovieDetails();
   }, [movieId]);
 
-  if (!movie) return <div className={styles.loading}>Loading...</div>;
-
-  const goBackLink = location.state?.from || "/movies";
+  if (!movie) {
+    return <div className={styles.loading}>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
-      <Link to={goBackLink} className={styles.goBack}>
-        ← Go Back
+      
+      <Link to={backLinkRef.current} className={styles.goBack}>
+        ← Go back
       </Link>
 
       <div className={styles.movieInfo}>
@@ -41,14 +45,20 @@ const MovieDetailsPage = () => {
         )}
         <div className={styles.details}>
           <h1 className={styles.title}>{movie.title}</h1>
-          <p className={styles.overview}>{movie.overview}</p>
-          <p>
-            <strong>Genres:</strong>{" "}
-            {movie.genres.map((g) => g.name).join(", ")}
-          </p>
-          <p>
-            <strong>Release date:</strong> {movie.release_date}
-          </p>
+          {movie.overview && (
+            <p className={styles.overview}>{movie.overview}</p>
+          )}
+          {movie.genres?.length > 0 && (
+            <p>
+              <strong>Genres:</strong>{" "}
+              {movie.genres.map((g) => g.name).join(", ")}
+            </p>
+          )}
+          {movie.release_date && (
+            <p>
+              <strong>Release date:</strong> {movie.release_date}
+            </p>
+          )}
           <p>
             <strong>Rating:</strong> {movie.vote_average}
           </p>
@@ -58,18 +68,20 @@ const MovieDetailsPage = () => {
       <div className={styles.additional}>
         <h2>Additional information</h2>
         <ul className={styles.links}>
+          
           <li>
-            <Link to="cast" state={{ from: goBackLink }}>
+            <Link to="cast" state={{ from: backLinkRef.current }}>
               Cast
             </Link>
           </li>
           <li>
-            <Link to="reviews" state={{ from: goBackLink }}>
+            <Link to="reviews" state={{ from: backLinkRef.current }}>
               Reviews
             </Link>
           </li>
         </ul>
 
+        
         <Outlet />
       </div>
     </div>
@@ -77,6 +89,3 @@ const MovieDetailsPage = () => {
 };
 
 export default MovieDetailsPage;
-
-
-
